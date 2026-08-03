@@ -554,6 +554,19 @@ document.addEventListener("keydown", (e) => {
 els.geo.addEventListener("click", useGeolocation);
 
 // Boot: last place, else geolocation, else empty state
+
+/* Pull-to-refresh — shared pull-refresh.js calls this */
+window.__onPullRefresh = async function () {
+  try {
+    const saved = JSON.parse(localStorage.getItem("lastPlace") || "null");
+    if (saved && saved.lat != null && saved.lon != null) {
+      await loadPlace(saved);
+      return;
+    }
+  } catch { /* fall through */ }
+  if (typeof useGeolocation === "function") useGeolocation();
+};
+
 (function boot() {
   setView("idle");
   try {
