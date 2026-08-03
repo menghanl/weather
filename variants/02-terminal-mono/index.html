@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#040605" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Weather" />
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="../../icons/icon-180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="../../icons/icon-192.png" />
+  <link rel="icon" type="image/svg+xml" href="../../icons/icon.svg" />
+  <title>wx — terminal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../style-switcher.css" />
+</head>
+<body>
+  <div class="crt" aria-hidden="true"></div>
+
+  <main class="term">
+    <!-- ── window chrome ─────────────────────────────────────────── -->
+    <header class="chrome">
+      <div class="chrome__bar">
+        <span class="chrome__dots" aria-hidden="true">[o][o][o]</span>
+        <span class="chrome__title">wx — dual-unit forecast</span>
+      </div>
+
+      <div class="chrome__row">
+        <form id="search-form" class="search" autocomplete="off" role="search">
+          <span class="search__prompt" aria-hidden="true">&gt;</span>
+          <input
+            id="search-input"
+            class="search__input"
+            type="search"
+            placeholder="locate city_"
+            enterkeyhint="search"
+            aria-label="Search for a city"
+            aria-autocomplete="list"
+            aria-controls="search-popup"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+          />
+          <ul
+            id="search-popup"
+            class="search-popup"
+            role="listbox"
+            aria-label="City suggestions"
+            hidden
+          ></ul>
+        </form>
+
+        <button
+          type="button"
+          id="geo-btn"
+          class="key-btn"
+          title="Use my location"
+          aria-label="Use my location"
+        >
+          <span class="key-btn__glyph" aria-hidden="true">&#x2316;</span>
+          <span class="key-btn__label">GEO</span>
+        </button>
+      </div>
+    </header>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <!-- ── loading ───────────────────────────────────────────────── -->
+    <div id="skeleton" class="skeleton" hidden aria-hidden="true">
+      <pre class="skeleton__head">
+&gt; fetch --lat ? --lon ?
+&gt; parsing open-meteo<span class="cursor"></span></pre>
+      <span class="sk sk--place"></span>
+      <span class="sk sk--temp"></span>
+      <span class="sk sk--row"></span>
+      <span class="sk sk--row"></span>
+      <span class="sk sk--row"></span>
+      <span class="sk sk--row"></span>
+      <span class="sk sk--row"></span>
+    </div>
+
+    <!-- ── empty / first run ─────────────────────────────────────── -->
+    <div id="empty" class="empty" hidden>
+      <pre class="empty__art" aria-hidden="true">
+ .-.
+(   ).
+(___(__)   no station selected
+  ' ' ' '</pre>
+      <p class="empty__title">NO DATA</p>
+      <p class="empty__hint">
+        type a city above, or press
+        <span class="empty__key">[&#x2316; GEO]</span>
+        for local coords.
+      </p>
+    </div>
+
+    <!-- ── 1 · current conditions ────────────────────────────────── -->
+    <section id="current" class="panel current" aria-labelledby="location" hidden>
+      <span class="panel__tag">CURRENT</span>
+
+      <h1 id="location" class="current__place"></h1>
+      <p id="condition" class="current__condition"></p>
+
+      <div id="temps" class="temps" role="img"></div>
+
+      <p id="hl" class="current__hl" role="img"></p>
+    </section>
+
+    <!-- ── 2 · 10-day forecast ───────────────────────────────────── -->
+    <section id="daily" class="panel daily" aria-labelledby="daily-heading" hidden>
+      <span class="panel__tag">FORECAST · 10D</span>
+
+      <h2 id="daily-heading" class="sr-only">10-day forecast</h2>
+
+      <div class="daily__head" aria-hidden="true">
+        <span>DAY</span>
+        <span>SKY</span>
+        <span class="daily__head-t">LO</span>
+        <span class="daily__head-bar">&#x2500;&#x2500; RANGE &#x2500;&#x2500;</span>
+        <span class="daily__head-t">HI</span>
+      </div>
+
+      <ul id="daily-list" class="daily__list"></ul>
+
+      <p class="daily__legend">
+        <span class="daily__legend-bar" aria-hidden="true"></span>
+        <span>cold &#x2192; warm &#xB7; &#xB0;F over &#xB0;C</span>
+      </p>
+    </section>
+
+    <footer class="credit">
+      <span aria-hidden="true">&#x2514;&#x2500;</span> src: open-meteo &#xB7; bigdatacloud
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="../../style-switcher.js"></script>
+  <script src="../../pwa.js"></script>
+</body>
+</html>

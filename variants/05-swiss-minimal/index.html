@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Weather" />
+  <link rel="manifest" href="../../manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="../../icons/icon-180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="../../icons/icon-192.png" />
+  <link rel="icon" type="image/svg+xml" href="../../icons/icon.svg" />
+  <title>Weather — Fahrenheit / Celsius</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../style-switcher.css" />
+</head>
+<body>
+  <main class="sheet">
+
+    <!-- Masthead -->
+    <header class="masthead">
+      <div class="masthead__row">
+        <h1 class="masthead__title">Weather</h1>
+        <span class="masthead__index">Fig. 05</span>
+      </div>
+      <p class="masthead__sub">Current conditions and ten-day forecast · Fahrenheit and Celsius</p>
+    </header>
+
+    <!-- Search -->
+    <div class="controls">
+      <form id="search-form" class="search" autocomplete="off" role="search">
+        <label class="search__label" for="search-input">Place</label>
+        <input
+          id="search-input"
+          class="search__input"
+          type="search"
+          placeholder="Search a city"
+          enterkeyhint="search"
+          aria-label="Search for a city"
+          aria-autocomplete="list"
+          aria-controls="search-popup"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+        />
+        <ul
+          id="search-popup"
+          class="popup"
+          role="listbox"
+          aria-label="City suggestions"
+          hidden
+        ></ul>
+      </form>
+
+      <button
+        type="button"
+        id="geo-btn"
+        class="geo"
+        title="Use my location"
+        aria-label="Use my location"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4.5" />
+          <path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4" />
+        </svg>
+      </button>
+    </div>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <!-- Loading placeholder -->
+    <div id="skeleton" class="skeleton" hidden aria-hidden="true">
+      <span class="sk sk--place"></span>
+      <div class="skeleton__temps">
+        <span class="sk sk--temp"></span>
+        <span class="sk sk--temp"></span>
+      </div>
+      <span class="sk sk--line"></span>
+      <span class="sk sk--row"></span>
+      <span class="sk sk--row"></span>
+      <span class="sk sk--row"></span>
+      <span class="sk sk--row"></span>
+      <span class="sk sk--row"></span>
+      <span class="sk sk--row"></span>
+    </div>
+
+    <!-- Empty / first run -->
+    <div id="empty" class="empty" hidden>
+      <p class="empty__no">No place selected</p>
+      <p class="empty__hint">
+        Type a city above, or use the location mark
+        <span class="empty__mark" aria-hidden="true">⌖</span>
+        to read your coordinates.
+      </p>
+    </div>
+
+    <!-- 1 · Current conditions -->
+    <section id="current" class="current" aria-labelledby="location" hidden>
+      <div class="current__head">
+        <span class="eyebrow">01 — Now</span>
+        <h2 id="location" class="current__place"></h2>
+      </div>
+
+      <div id="temps" class="temps" role="img"></div>
+
+      <dl class="facts">
+        <div class="facts__row">
+          <dt class="facts__key">Condition</dt>
+          <dd id="condition" class="facts__val"></dd>
+        </div>
+        <div class="facts__row">
+          <dt class="facts__key">High / Low</dt>
+          <dd id="hl" class="facts__val facts__val--hl" role="img"></dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- 2 · Ten-day forecast -->
+    <section id="daily" class="daily" aria-labelledby="daily-heading" hidden>
+      <div class="daily__head">
+        <span class="eyebrow">02 — Forecast</span>
+        <h2 id="daily-heading" class="daily__title">Ten days</h2>
+      </div>
+
+      <div class="table">
+        <div class="table__head" aria-hidden="true">
+          <span class="col col--no">№</span>
+          <span class="col col--day">Day</span>
+          <span class="col col--mark">Sky</span>
+          <span class="col col--num">Low</span>
+          <span class="col col--bar">Range</span>
+          <span class="col col--num">High</span>
+        </div>
+        <ul id="daily-list" class="table__body"></ul>
+      </div>
+
+      <p class="legend">
+        <span>°F set above °C</span>
+        <span>Bar spans the ten-day minimum to maximum</span>
+      </p>
+    </section>
+
+    <footer class="colophon">
+      <span>Open-Meteo · BigDataCloud</span>
+      <span>Swiss Minimal</span>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="../../style-switcher.js"></script>
+  <script src="../../pwa.js"></script>
+</body>
+</html>

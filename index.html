@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0a0e17" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Weather" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+  <title>Weather · °F &amp; °C</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style-switcher.css" />
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+
+  <main class="app">
+    <header class="topbar">
+      <form id="search-form" class="search" autocomplete="off" role="search">
+        <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="11" cy="11" r="6.5" />
+          <path d="M16 16l4.5 4.5" />
+        </svg>
+        <input
+          id="search-input"
+          class="search__input"
+          type="search"
+          placeholder="Search city"
+          enterkeyhint="search"
+          aria-label="Search for a city"
+          aria-autocomplete="list"
+          aria-controls="search-popup"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+        />
+        <ul
+          id="search-popup"
+          class="search-popup"
+          role="listbox"
+          aria-label="City suggestions"
+          hidden
+        ></ul>
+      </form>
+
+      <button
+        type="button"
+        id="geo-btn"
+        class="icon-btn"
+        title="Use my location"
+        aria-label="Use my location"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+        </svg>
+      </button>
+    </header>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <!-- Loading placeholder -->
+    <div id="skeleton" class="skeleton" hidden aria-hidden="true">
+      <div class="skeleton__hero">
+        <span class="sk sk--place"></span>
+        <span class="sk sk--temp"></span>
+        <span class="sk sk--cond"></span>
+      </div>
+      <div class="skeleton__list">
+        <span class="sk sk--row"></span>
+        <span class="sk sk--row"></span>
+        <span class="sk sk--row"></span>
+        <span class="sk sk--row"></span>
+        <span class="sk sk--row"></span>
+      </div>
+    </div>
+
+    <!-- Empty / first-run state -->
+    <div id="empty" class="empty" hidden>
+      <svg class="empty__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M7 18h9.5a3.5 3.5 0 0 0 .4-6.98A5.5 5.5 0 0 0 6.6 9.7 3.65 3.65 0 0 0 7 18z" />
+      </svg>
+      <p class="empty__title">No place yet</p>
+      <p class="empty__hint">Search for a city, or tap <span class="empty__key">⌖</span> to use your location.</p>
+    </div>
+
+    <!-- 1 · Current conditions -->
+    <section id="current" class="current" aria-labelledby="location" hidden>
+      <h1 id="location" class="current__place"></h1>
+      <div id="temps" class="temps" role="img"></div>
+      <p id="condition" class="current__condition"></p>
+      <p id="hl" class="current__hl" role="img"></p>
+    </section>
+
+    <!-- 2 · Multi-day forecast -->
+    <section id="daily" class="daily card" aria-labelledby="daily-heading" hidden>
+      <h2 id="daily-heading" class="daily__heading">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="3.5" y="5" width="17" height="15" rx="3" />
+          <path d="M3.5 10h17M8 3v4M16 3v4" />
+        </svg>
+        10-Day Forecast
+      </h2>
+      <ul id="daily-list" class="daily__list"></ul>
+      <p class="daily__legend">
+        <span class="daily__legend-key">Low</span>
+        <span class="daily__legend-bar" aria-hidden="true"></span>
+        <span class="daily__legend-key">High</span>
+        <span class="daily__legend-note">°F over °C</span>
+      </p>
+    </section>
+
+    <footer class="credit">Data from Open-Meteo</footer>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="style-switcher.js"></script>
+  <script src="pwa.js"></script>
+</body>
+</html>
