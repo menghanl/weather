@@ -1,6 +1,7 @@
 /**
  * Top-of-page style dropdown shared by all weather variants.
- * Injects a fixed bar skinned via data-style to match the active theme.
+ * Injects a fixed bar skinned via data-style; spacer matches measured height
+ * so content and taps clear the notch in standalone / PWA mode.
  */
 (function () {
   const STYLES = [
@@ -54,7 +55,8 @@
     const p = location.pathname;
     for (const s of STYLES) {
       if (!s.dir) continue;
-      if (p.includes("/" + s.dir) || p.includes("/" + s.dir.replace(/\/$/, ""))) {
+      // Match /variants/… even under /weather/ on GitHub Pages
+      if (p.includes("/" + s.dir.replace(/\/$/, "")) || p.includes("/" + s.dir)) {
         return s.id;
       }
     }
@@ -63,8 +65,17 @@
 
   function hrefFor(style) {
     const base = appBase();
-    if (!style.dir) return base.replace(/\/variants\/.*$/, "/") || "/";
+    if (!style.dir) return base;
     return base + style.dir;
+  }
+
+  function syncSpacer(bar, spacer) {
+    // Use measured box so safe-area + theme chrome always match
+    const h = Math.ceil(bar.getBoundingClientRect().height);
+    if (h > 0) {
+      spacer.style.height = h + "px";
+      document.documentElement.style.setProperty("--ss-bar-height", h + "px");
+    }
   }
 
   function mount() {
@@ -74,6 +85,7 @@
     const meta = STYLES.find((s) => s.id === current) || STYLES[0];
 
     document.documentElement.dataset.weatherStyle = current;
+    document.documentElement.classList.add("has-style-switcher");
 
     const bar = document.createElement("div");
     bar.id = "style-switcher";
@@ -97,6 +109,18 @@
 
     document.body.prepend(spacer);
     document.body.prepend(bar);
+
+    const layout = () => syncSpacer(bar, spacer);
+    layout();
+    // After fonts / safe-area settle (esp. iOS standalone)
+    requestAnimationFrame(layout);
+    setTimeout(layout, 50);
+    setTimeout(layout, 300);
+    window.addEventListener("resize", layout);
+    window.addEventListener("orientationchange", () => setTimeout(layout, 100));
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", layout);
+    }
 
     const select = bar.querySelector("select");
     select.addEventListener("change", () => {
