@@ -1,17 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0d1420"/>
-      <stop offset="100%" stop-color="#080b12"/>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a4a78"/>
+      <stop offset="55%" stop-color="#15233a"/>
+      <stop offset="100%" stop-color="#0a1220"/>
     </linearGradient>
-    <linearGradient id="sun" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#ffe08a"/>
-      <stop offset="100%" stop-color="#ffb057"/>
+    <radialGradient id="glow" cx="50%" cy="34%" r="40%">
+      <stop offset="0%" stop-color="#ffc45a" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ffc45a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sun" x1="0.3" y1="0.2" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#ffe7a0"/>
+      <stop offset="100%" stop-color="#ffb24a"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <circle cx="256" cy="220" r="88" fill="url(#sun)"/>
-  <circle cx="256" cy="220" r="130" fill="#ffb057" opacity="0.12"/>
-  <rect x="110" y="360" width="130" height="36" rx="18" fill="#86aaff"/>
-  <rect x="272" y="360" width="130" height="36" rx="18" fill="#ffb057"/>
+  <!-- full-bleed square; iOS/Android apply their own mask -->
+  <rect width="512" height="512" fill="url(#sky)"/>
+  <circle cx="256" cy="174" r="150" fill="url(#glow)"/>
+  <circle cx="256" cy="174" r="74" fill="url(#sun)"/>
+  <rect x="56" y="300" width="400" height="156" rx="32" fill="#0c1220" fill-opacity="0.82"/>
+  <line x1="256" y1="324" x2="256" y2="432" stroke="#ffffff" stroke-opacity="0.18" stroke-width="3"/>
+  <text x="150" y="404" text-anchor="middle" font-family="system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="92" font-weight="700" fill="#96beff">°F</text>
+  <text x="362" y="404" text-anchor="middle" font-family="system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="92" font-weight="700" fill="#ffbe78">°C</text>
 </svg>
